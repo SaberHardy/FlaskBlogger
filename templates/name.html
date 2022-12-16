@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container my-5">
+        {% if name %}
+            <h3>Hello {{ name }}</h3>
+            <br>
+        {% else %}
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
+
+                <br>
+
+                {{ form.submit(class="btn btn-success") }}
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
