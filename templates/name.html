@@ -2,6 +2,15 @@
 
 {% block content %}
     <div class="container my-5">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+
         {% if name %}
             <h3>Hello {{ name }}</h3>
             <br>
