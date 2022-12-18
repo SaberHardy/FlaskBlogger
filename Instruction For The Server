@@ -2,3 +2,13 @@ Before run flask server:
 ---> export FLASK_DEBUG=development
 ---> export FLASK_APP=app.py
 ---> flask --debug run
+
+-----------------Flask create data base ------------
+1- Create database model
+2- db.create_all() # this is for create the database from the model
+3 - use this in your creation of your app
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+        app.run(debug=True)

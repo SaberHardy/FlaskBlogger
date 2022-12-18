@@ -11,6 +11,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
 
 app.config['SECRET_KEY'] = "my secret key to world"
 
+db = SQLAlchemy(app)
+
 
 @app.route('/')
 def home():  # put application's code here
@@ -47,5 +49,7 @@ def name():
                            form=form)
 
 
-if __name__ == '__main__':
-    app.run()
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+        app.run(debug=True)
