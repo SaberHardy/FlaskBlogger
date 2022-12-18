@@ -5,10 +5,16 @@ Before run flask server:
 
 -----------------Flask create data base ------------
 1- Create database model
-2- db.create_all() # this is for create the database from the model
-3 - use this in your creation of your app
+2- flask shell
+3- db.create_all() # this is for create the database from the model
+4- use this in your creation of your app
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         app.run(debug=True)
+
+# If you see a database error you can delete the database and run again:
+
+1- flask shell
+2- db.create_all()
