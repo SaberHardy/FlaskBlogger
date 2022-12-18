@@ -1,0 +1,4 @@
+Before run flask server:
+---> export FLASK_DEBUG=development
+---> export FLASK_APP=app.py
+---> flask --debug run
