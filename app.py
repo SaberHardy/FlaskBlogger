@@ -1,8 +1,14 @@
 from flask import Flask, render_template, flash
 
 from forms import NameForm
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
+
+# Add database
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
+
 app.config['SECRET_KEY'] = "my secret key to world"
 
 
