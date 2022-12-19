@@ -18,3 +18,10 @@ if __name__ == "__main__":
 
 1- flask shell
 2- db.create_all()
+
+
+------------------- ModuleNotFoundError: No module named 'MySQLdb' ------------
+This error is for installing:
+- pip install pymysql
+also:
+- pip install cryptography

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request, redirect, url_for
 from forms import NameForm, UserForm
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -6,7 +6,10 @@ from datetime import datetime
 app = Flask(__name__)
 
 # Add database
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
+# Old database
+# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
+# new db
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/users"
 
 app.config['SECRET_KEY'] = "my secret key to world"
 
@@ -80,6 +83,28 @@ def add_user():
                            form=form,
                            name=name,
                            our_users=our_users)
+
+
+@app.route('/update/<int:id>/', methods=['POSt', 'GET'])
+def update(id):
+    form = UserForm()
+    name_to_update = Users.query.get_or_404(id)
+    if request.method == 'POST':
+        name_to_update.name = request.form['name']
+        name_to_update.email = request.form['email']
+        try:
+            db.session.commit()
+            flash('User updated successfully!!')
+            return redirect(url_for('add_user'))
+        except:
+            flash('The update can\'t be completed')
+            return render_template('update.html',
+                                   form=form,
+                                   name_to_update=name_to_update)
+    else:
+        return render_template('update.html',
+                               form=form,
+                               name_to_update=name_to_update)
 
 
 if __name__ == "__main__":
