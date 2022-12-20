@@ -115,7 +115,31 @@ def update(id):
     else:
         return render_template('update.html',
                                form=form,
-                               name_to_update=name_to_update)
+                               name_to_update=name_to_update,
+                               id=id)
+
+
+@app.route('/delete/<int:id>/', methods=['POST', 'GET'])
+def delete(id):
+    name = None
+    form = UserForm()
+    user_to_delete = Users.query.get_or_404(id)
+    try:
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash("User was deleted successfully")
+        flash("User added successfully!")
+        our_users = Users.query.order_by(Users.date_added)
+        return render_template('add_user.html',
+                               form=form,
+                               name=name,
+                               our_users=our_users)
+    except:
+        flash("We cant find your user to delete")
+        return render_template('add_user.html',
+                               form=form,
+                               name=name,
+                               our_users=our_users)
 
 
 if __name__ == "__main__":
