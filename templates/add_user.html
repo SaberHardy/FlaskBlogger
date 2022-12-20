@@ -25,6 +25,9 @@
                     {{ form.email.label(class="form-label") }}
                     {{ form.email(class="form-control") }}
 
+                    {{ form.school_study.label(class="form-label") }}
+                    {{ form.school_study(class="form-control") }}
+
                     <br>
 
                     {{ form.submit(class="btn btn-success mb-5") }}
@@ -40,15 +43,17 @@
                 <th scope="col">ID</th>
                 <th scope="col">Full name</th>
                 <th scope="col">Email</th>
+                <th scope="col">School Study</th>
             </tr>
             </thead>
             <tbody>
-            {% for user in our_users %}
 
+            {% for user in our_users %}
                 <tr>
                     <th scope="row">{{ user.id }}</th>
                     <td><a href="{{ url_for('update', id=user.id) }}">{{ user.name }}</a></td>
                     <td>{{ user.email }}</td>
+                    <td>{{ user.school_study }}</td>
                 </tr>
             {% endfor %}
 

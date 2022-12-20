@@ -12,3 +12,4 @@ class UserForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])
     submit = SubmitField("Submit")
+    school_study = StringField('School Study')

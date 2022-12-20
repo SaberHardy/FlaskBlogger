@@ -37,3 +37,38 @@ run this command in your computer terminal:
 After that you can open the browser on:
 ---> http://localhost/phpmyadmin/
 after that you can create your database
+
+--------------- For Adding new Column in database ---------------
+1- Add your name column you want to add (for example school_study)
+2- Add the name in the form to render it in the template
+3- Edit your code in the app.py:
+
+                [user = Users(name=form.name.data,
+                    email=form.email.data,
+                    school_study=form.school_study.data)]
+4- also: check your code if you need this field or you already used these fields.
+In my case i added this field (school_study), in two methods, [add_user, update]
+5- Check also the files "".html"", if you need to update something.
+
+After all these steps, in your terminal make sure you are in your terminal and write these commands:
+6- pip install Flask-Migrate
+7- add importation to app.py:
+    from flask_migrate import Migrate
+    # Migrate the app with database
+    migrate = Migrate(app, db)
+
+8- In the terminal write:
+    - flask db init
+    - flask db migrate -m "Initial migration"
+    # Push all the migrations to database
+    - flask db upgrade
+9- Run the server to see your new fields
+
+
+""
+
+If there is a problem in running server you can run this command
+chrome://net-internals/#sockets
+and choose
+--> Flush socket pools
+""
