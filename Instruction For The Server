@@ -25,3 +25,15 @@ This error is for installing:
 - pip install pymysql
 also:
 - pip install cryptography
+
+
+install mysql in pycharm terminal:
+--> pip install mysqlclient
+
+run this command in your computer terminal:
+--> sudo killall mysqld
+--> sudo apachectl stop
+
+After that you can open the browser on:
+---> http://localhost/phpmyadmin/
+after that you can create your database
