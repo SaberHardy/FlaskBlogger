@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField  # fields to type  into input
-from wtforms.validators import DataRequired
+from wtforms import StringField, SubmitField, PasswordField  # fields to type  into input
+from wtforms.validators import DataRequired, EqualTo, Length
 
 
 class NameForm(FlaskForm):
@@ -13,3 +13,8 @@ class UserForm(FlaskForm):
     email = StringField('email', validators=[DataRequired()])
     submit = SubmitField("Submit")
     school_study = StringField('School Study')
+    password_hash = PasswordField('Password',
+                                  validators=[DataRequired(),
+                                              EqualTo('password_hash2',
+                                                      message='Password must much')])
+    password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])

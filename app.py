@@ -3,6 +3,7 @@ from forms import NameForm, UserForm
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -26,6 +27,18 @@ class Users(db.Model):
     email = db.Column(db.String(200), nullable=False, unique=True)
     school_study = db.Column(db.String(300))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    password_hash = db.Column(db.String(128))
+
+    @property
+    def password(self):
+        raise AttributeError("Password is not readable")
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     # Create string
 
@@ -75,9 +88,12 @@ def add_user():
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
+            hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
             user = Users(name=form.name.data,
                          email=form.email.data,
-                         school_study=form.school_study.data)
+                         school_study=form.school_study.data,
+                         password_hash=hashed_pw
+                         )
             db.session.add(user)
             db.session.commit()
 
@@ -86,6 +102,7 @@ def add_user():
         form.name.data = ""
         form.email.data = ""
         form.school_study.data = ""
+        form.password_hash.data = ""
 
         flash("User added successfully!")
     our_users = Users.query.order_by(Users.date_added)

@@ -20,13 +20,19 @@
                 <form method="POST">
                     {{ form.hidden_tag() }}
                     {{ form.name.label(class="form-label") }}
-                    {{ form.name(class="form-control") }}
+                    {{ form.name(class="form-control mb-3") }}
 
                     {{ form.email.label(class="form-label") }}
-                    {{ form.email(class="form-control") }}
+                    {{ form.email(class="form-control mb-3") }}
 
                     {{ form.school_study.label(class="form-label") }}
-                    {{ form.school_study(class="form-control") }}
+                    {{ form.school_study(class="form-control mb-3") }}
+
+                    {{ form.password_hash.label(class="form-label") }}
+                    {{ form.password_hash(class="form-control mb-3") }}
+
+                    {{ form.password_hash2.label(class="form-label") }}
+                    {{ form.password_hash2(class="form-control mb-3") }}
 
                     <br>
 
@@ -44,6 +50,7 @@
                 <th scope="col">Full name</th>
                 <th scope="col">Email</th>
                 <th scope="col">School Study</th>
+                <th scope="col">Password Hashed</th>
                 <th scope="col">Delete</th>
             </tr>
             </thead>
@@ -55,6 +62,8 @@
                     <td><a href="{{ url_for('update', id=user.id) }}">{{ user.name }}</a></td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.school_study }}</td>
+
+                    <td>{{ user.password_hash }}</td>
                     <td>
                         <a href="{{ url_for('delete', id=user.id) }}">
                             <i class="bi bi-trash3-fill text-danger"></i>
