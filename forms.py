@@ -18,3 +18,10 @@ class UserForm(FlaskForm):
                                               EqualTo('password_hash2',
                                                       message='Password must much')])
     password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])
+
+
+class PasswordForm(FlaskForm):
+    email = StringField("What's your name sir?", validators=[DataRequired()])
+    password_hash = PasswordField("What's your password sir?", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+

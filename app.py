@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
-from forms import NameForm, UserForm
+from forms import NameForm, UserForm, PasswordForm
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
@@ -78,6 +78,34 @@ def name():
 
     return render_template('name.html',
                            name=name,
+                           form=form)
+
+
+@app.route('/test_pw', methods=['GET', 'POST'])
+def test_pw():
+    email = None
+    password = None
+    pw_to_check = None
+    passed = None
+    form = PasswordForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password_hash.data
+
+        form.email.data = ''
+        form.password_hash.data = ''
+
+        # flash("Form Submitted successfully")
+        # If the information input were written
+        pw_to_check = Users.query.filter_by(email=email).first()
+        passed = check_password_hash(pw_to_check.password_hash, password)
+
+    return render_template('test_pw.html',
+                           email=email,
+                           password=password,
+                           pw_to_check=pw_to_check,
+                           passed=passed,
                            form=form)
 
 
