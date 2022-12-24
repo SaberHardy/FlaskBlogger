@@ -221,7 +221,7 @@ def add_post():
 
 @app.route('/retrieve', methods=['POST', 'GET'])
 def retrieve_all_posts():
-    posts = Posts.query.all()
+    posts = Posts.query.order_by(-Posts.date_posted).all()  # Order by last added
     return render_template('blog/all_posts.html', posts=posts)
 
 

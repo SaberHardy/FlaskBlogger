@@ -3,7 +3,17 @@
 {% block content %}
     <div class="container my-5">
         {% for post in posts %}
-            {{ post.title }}<br/>
+            <div class="card mt-3 shadow-lg p-3 mb-5 bg-white rounded" style="width:1150px">
+                <div class="card-body">
+
+                    <h4 class="card-title">{{ post.title|title }}</h4>
+                    <p class="card-text">{{ post.content }}</p>
+                    <a href="#">Read More</a>
+                    <br>
+                    <small class="card-title">By: {{ post.author }}</small><br>
+                    <small class="card-text float-right">Created On: {{ post.date_posted }}</small>
+                </div>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
