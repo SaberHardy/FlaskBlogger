@@ -52,7 +52,7 @@ In my case i added this field (school_study), in two methods, [add_user, update]
 
 After all these steps, in your terminal make sure you are in your terminal and write these commands:
 6- pip install Flask-Migrate
-7- add importation to app.py:
+7- add importation to "app.py":
     from flask_migrate import Migrate
     # Migrate the app with database
     migrate = Migrate(app, db)

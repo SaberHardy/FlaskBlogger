@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
-from forms import NameForm, UserForm, PasswordForm
+from forms import NameForm, UserForm, PasswordForm, PostForm
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
@@ -19,6 +19,15 @@ db = SQLAlchemy(app)
 
 # Migrate the app with database
 migrate = Migrate(app, db)
+
+
+class Posts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
+    content = db.Column(db.Text)
+    author = db.Column(db.String(255))
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    slug = db.Column(db.String(255))
 
 
 class Users(db.Model):
@@ -185,6 +194,35 @@ def delete(id):
                                form=form,
                                name=name,
                                our_users=our_users)
+
+
+@app.route('/add_post', methods=['POST', 'GET'])
+def add_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Posts(title=form.title.data,
+                     content=form.content.data,
+                     author=form.author.data,
+                     slug=form.slug.data)
+
+        form.title.data = ''
+        form.content.data = ''
+        form.author.data = ''
+        form.slug.data = ''
+
+        # Add the post to the database
+        db.session.add(post)
+        db.session.commit()
+
+        flash("Your post added successfully")
+
+    return render_template('blog/add_post.html', form=form)
+
+
+@app.route('/retrieve', methods=['POST', 'GET'])
+def retrieve_all_posts():
+    posts = Posts.query.all()
+    return render_template('blog/all_posts.html', posts=posts)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField  # fields to type  into input
 from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.widgets import TextArea
 
 
 class NameForm(FlaskForm):
@@ -25,3 +26,10 @@ class PasswordForm(FlaskForm):
     password_hash = PasswordField("What's your password sir?", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
+
+class PostForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    content = StringField("Content", validators=[DataRequired()], widget=TextArea())
+    author = StringField("Author", validators=[DataRequired()])
+    slug = StringField("Slug", validators=[DataRequired()])
+    submit = SubmitField()
