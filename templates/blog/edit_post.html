@@ -1,0 +1,38 @@
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block content %}#}
+{#    <div class="container my-5">#}
+{#        {% for message in get_flashed_messages() %}#}
+{#            <div class="alert alert-success alert-dismissible fade show" role="alert">#}
+{#                {{ message }}#}
+{#                <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#                    <span aria-hidden="true">&times;</span>#}
+{#                </button>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{##}
+{#        <h1>{{ flag }} Blog Post</h1>#}
+{#        <div class="shadow p-3 mb-5 bg-body rounded">#}
+{#            <form method="POST">#}
+{#                {{ form.hidden_tag() }}#}
+{##}
+{#                {{ form.title.label(class="form-label") }}#}
+{#                {{ form.title(class="form-control mb-3") }}#}
+{##}
+{#                {{ form.author.label(class="form-label") }}#}
+{#                {{ form.author(class="form-control mb-3") }}#}
+{##}
+{#                {{ form.content.label(class="form-label") }}#}
+{#                {{ form.content(class="form-control mb-3", rows="5") }}#}
+{##}
+{#                {{ form.slug.label(class="form-label") }}#}
+{#                {{ form.slug(class="form-control mb-3") }}#}
+{##}
+{#                <br>#}
+{##}
+{#                {{ form.submit(class="btn btn-success mb-5") }}#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}
+{##}

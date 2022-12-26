@@ -55,9 +55,9 @@ class Users(db.Model):
         return '<Name %r>' % self.name
 
 
-@app.route('/')
-def home():  # put application's code here
-    return render_template('home.html')
+# @app.route('/')
+# def home():  # put application's code here
+#     return render_template('home.html')
 
 
 @app.route('/user/<name>/')
@@ -173,31 +173,32 @@ def update(id):
                                id=id)
 
 
-@app.route('/delete/<int:id>/', methods=['POST', 'GET'])
-def delete(id):
-    name = None
-    form = UserForm()
-    user_to_delete = Users.query.get_or_404(id)
+@app.route('/delete/<int:id>/')
+def delete_post(id):
+    post_to_delete = Posts.query.get_or_404(id)
     try:
-        db.session.delete(user_to_delete)
+        db.session.delete(post_to_delete)
         db.session.commit()
-        flash("User was deleted successfully")
-        flash("User added successfully!")
-        our_users = Users.query.order_by(Users.date_added)
-        return render_template('add_user.html',
-                               form=form,
-                               name=name,
-                               our_users=our_users)
+
+        # Return a message
+        flash("Blog Post Was Deleted!")
+
+        # Grab all the posts from the database
+        posts = Posts.query.order_by(Posts.date_posted)
+        return render_template("blog/all_posts.html", posts=posts)
+
     except:
-        flash("We cant find your user to delete")
-        return render_template('add_user.html',
-                               form=form,
-                               name=name,
-                               our_users=our_users)
+        # Return an error message
+        flash("Whoops! There was a problem deleting post, try again...")
+
+        # Grab all the posts from the database
+        posts = Posts.query.order_by(Posts.date_posted)
+        return render_template("blog/all_posts.html", posts=posts)
 
 
 @app.route('/add_post', methods=['POST', 'GET'])
 def add_post():
+    flag = 'Create'
     form = PostForm()
     if form.validate_on_submit():
         post = Posts(title=form.title.data,
@@ -216,10 +217,10 @@ def add_post():
 
         flash("Your post added successfully")
 
-    return render_template('blog/add_post.html', form=form)
+    return render_template('blog/add_post.html', form=form, flag=flag)
 
 
-@app.route('/retrieve', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def retrieve_all_posts():
     posts = Posts.query.order_by(-Posts.date_posted).all()  # Order by last added
     return render_template('blog/all_posts.html', posts=posts)
@@ -230,6 +231,31 @@ def post_detail(id):
     get_post = Posts.query.get_or_404(id)
 
     return render_template('blog/post_detail.html', get_post=get_post)
+
+
+@app.route('/edit/<int:id>/', methods=['POST', 'GET'])
+def edit_post(id):
+    flag = 'Edit'
+    post_edit = Posts.query.get_or_404(id)
+    form = PostForm()
+    if form.validate_on_submit():
+        post_edit.title = form.title.data
+        post_edit.content = form.content.data
+        post_edit.author = form.author.data
+        post_edit.slug = form.slug.data
+
+        db.session.add(post_edit)
+        db.session.commit()
+
+        flash("Post has been updated successfully!")
+        return redirect(url_for('retrieve_all_posts', id=post_edit.id))
+
+    form.title.data = post_edit.title
+    form.content.data = post_edit.content
+    form.author.data = post_edit.author
+    form.slug.data = post_edit.slug
+
+    return render_template('blog/add_post.html', form=form, flag=flag)
 
 
 if __name__ == "__main__":
