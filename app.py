@@ -225,6 +225,13 @@ def retrieve_all_posts():
     return render_template('blog/all_posts.html', posts=posts)
 
 
+@app.route('/detail/<int:id>/', methods=['POST', 'GET'])
+def post_detail(id):
+    get_post = Posts.query.get_or_404(id)
+
+    return render_template('blog/post_detail.html', get_post=get_post)
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
