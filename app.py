@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, login_user, LoginManager
 
 app = Flask(__name__)
 
@@ -30,8 +31,9 @@ class Posts(db.Model):
     slug = db.Column(db.String(255))
 
 
-class Users(db.Model):
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    # user_name = db.Column(db.String(20), nullable=False, unique=True)
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), nullable=False, unique=True)
     school_study = db.Column(db.String(300))
@@ -147,6 +149,29 @@ def add_user():
                            form=form,
                            name=name,
                            our_users=our_users)
+
+
+@app.route('/delete_user/<int:id>/')
+def delete_user(id):
+    user_to_delete = Users.query.get_or_404(id)
+    name = None
+    form = UserForm()
+
+    try:
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash("User Deleted Successfully!!")
+
+        our_users = Users.query.order_by(Users.date_added)
+        return render_template("add_user.html",
+                               form=form,
+                               name=name,
+                               our_users=our_users)
+
+    except:
+        flash("Whoops! There was a problem deleting user, try again...")
+        return render_template("add_user.html",
+                               form=form, name=name, our_users=our_users)
 
 
 @app.route('/update/<int:id>/', methods=['POSt', 'GET'])
