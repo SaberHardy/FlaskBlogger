@@ -11,7 +11,8 @@ class NameForm(FlaskForm):
 
 class UserForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    email = StringField('email', validators=[DataRequired()])
+    username = StringField('User name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
     submit = SubmitField("Submit")
     school_study = StringField('School Study')
     password_hash = PasswordField('Password',

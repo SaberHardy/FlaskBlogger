@@ -33,7 +33,7 @@ class Posts(db.Model):
 
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    # user_name = db.Column(db.String(20), nullable=False, unique=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), nullable=False, unique=True)
     school_study = db.Column(db.String(300))
@@ -128,17 +128,18 @@ def add_user():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
             hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
-            user = Users(name=form.name.data,
-                         email=form.email.data,
-                         school_study=form.school_study.data,
-                         password_hash=hashed_pw
-                         )
+            user = Users(
+                name=form.name.data,
+                username=form.username.data,
+                email=form.email.data,
+                school_study=form.school_study.data,
+                password_hash=hashed_pw
+            )
             db.session.add(user)
             db.session.commit()
 
-        name = form.name.data
-
         form.name.data = ""
+        form.username.data = ""
         form.email.data = ""
         form.school_study.data = ""
         form.password_hash.data = ""
@@ -179,7 +180,7 @@ def update(id):
     form = UserForm()
     name_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
-        name_to_update.name = request.form['name']
+        name_to_update.username = request.form['username']
         name_to_update.email = request.form['email']
         name_to_update.school_study = request.form['school_study']
         try:
