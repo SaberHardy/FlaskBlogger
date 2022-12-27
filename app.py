@@ -64,17 +64,17 @@ class Users(db.Model, UserMixin):
 
 @app.route('/user/<name>/')
 def user(name):  # put application's code here
-    return render_template('user.html', name=name)
+    return render_template('users/user.html', name=name)
 
 
 @app.errorhandler(404)
 def custom_err(err):
-    return render_template('error404.html'), 404
+    return render_template('users/error404.html'), 404
 
 
 @app.errorhandler(500)
 def internal_server_error(err):
-    return render_template('error505.html'), 500
+    return render_template('users/error505.html'), 500
 
 
 @app.route('/name', methods=['GET', 'POST'])
@@ -87,7 +87,7 @@ def name():
         form.name.data = ''
         flash("Form Submitted successfully")
 
-    return render_template('name.html',
+    return render_template('users/name.html',
                            name=name,
                            form=form)
 
@@ -112,7 +112,7 @@ def test_pw():
         pw_to_check = Users.query.filter_by(email=email).first()
         passed = check_password_hash(pw_to_check.password_hash, password)
 
-    return render_template('test_pw.html',
+    return render_template('users/test_pw.html',
                            email=email,
                            password=password,
                            pw_to_check=pw_to_check,
@@ -146,7 +146,7 @@ def add_user():
 
         flash("User added successfully!")
     our_users = Users.query.order_by(Users.date_added)
-    return render_template('add_user.html',
+    return render_template('users/add_user.html',
                            form=form,
                            name=name,
                            our_users=our_users)
@@ -164,14 +164,14 @@ def delete_user(id):
         flash("User Deleted Successfully!!")
 
         our_users = Users.query.order_by(Users.date_added)
-        return render_template("add_user.html",
+        return render_template("users/add_user.html",
                                form=form,
                                name=name,
                                our_users=our_users)
 
     except:
         flash("Whoops! There was a problem deleting user, try again...")
-        return render_template("add_user.html",
+        return render_template("users/add_user.html",
                                form=form, name=name, our_users=our_users)
 
 
@@ -189,11 +189,11 @@ def update(id):
             return redirect(url_for('add_user'))
         except:
             flash('The update can\'t be completed')
-            return render_template('update.html',
+            return render_template('users/update.html',
                                    form=form,
                                    name_to_update=name_to_update)
     else:
-        return render_template('update.html',
+        return render_template('users/update.html',
                                form=form,
                                name_to_update=name_to_update,
                                id=id)
