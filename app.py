@@ -1,10 +1,10 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
-from forms import NameForm, UserForm, PasswordForm, PostForm
+from forms import NameForm, UserForm, PasswordForm, PostForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin, login_user, LoginManager
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
 
 app = Flask(__name__)
 
@@ -20,6 +20,51 @@ db = SQLAlchemy(app)
 
 # Migrate the app with database
 migrate = Migrate(app, db)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+
+
+# Login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(
+            username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password_hash,
+                                   form.password.data):
+                login_user(user)
+                flash("Login successfully!")
+                return redirect(url_for('dashboard'))
+            else:
+                flash("Wrong password, try again!!!!!!!")
+        else:
+            flash("The user doesnt exist!!")
+
+    return render_template('members/login.html', form=form)
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+
+    return redirect(url_for('login'))
+
+
+# Dashboard
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template('members/dashboard.html')
 
 
 class Posts(db.Model):
