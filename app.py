@@ -305,6 +305,7 @@ def post_detail(id):
 
 
 @app.route('/edit/<int:id>/', methods=['POST', 'GET'])
+@login_required
 def edit_post(id):
     flag = 'Edit'
     post_edit = Posts.query.get_or_404(id)

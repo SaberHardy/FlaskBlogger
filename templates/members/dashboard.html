@@ -1,19 +1,52 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
-    <div class="container my-5">
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
-        <h3 class="mb-5 ">Dashboard</h3>
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <h2 class="text-center mt-3">User Dashboard</h2>
     <br/>
-    <p>You are logged In</p>
 
+    <div class="card mx-3">
+        <div class="card-header">
+            {{ current_user.name|title }}
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <strong>User Id:</strong>
+                        {{ current_user.id }}<br/>
 
+                        <strong>Name:</strong>
+                        {{ current_user.name|title }}<br/>
+
+                        <strong>Username:</strong>
+                        {{ current_user.username }}<br/>
+
+                        <strong>Email:</strong>
+                        {{ current_user.email }}<br/>
+
+                        </p>
+                        <a href="{{ url_for('logout') }}"
+                           class="btn btn-danger float-right ml-2 btn-sm">
+                            Logout
+                        </a>
+
+                        <a href="{{ url_for('update', id=current_user.id) }}"
+                           class="btn btn-secondary float-right btn-sm">Update
+                            Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <br/>
 {% endblock %}
