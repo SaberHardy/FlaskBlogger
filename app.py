@@ -166,6 +166,7 @@ def test_pw():
 
 
 @app.route('/user/add', methods=['GET', 'POST'])
+# @login_required
 def add_user():
     name = None
     form = UserForm()
@@ -198,6 +199,7 @@ def add_user():
 
 
 @app.route('/delete_user/<int:id>/')
+@login_required
 def delete_user(id):
     user_to_delete = Users.query.get_or_404(id)
     name = None
@@ -221,6 +223,7 @@ def delete_user(id):
 
 
 @app.route('/update/<int:id>/', methods=['POSt', 'GET'])
+@login_required
 def update(id):
     form = UserForm()
     name_to_update = Users.query.get_or_404(id)
@@ -245,6 +248,7 @@ def update(id):
 
 
 @app.route('/delete/<int:id>/')
+@login_required
 def delete_post(id):
     post_to_delete = Posts.query.get_or_404(id)
     try:
@@ -268,6 +272,7 @@ def delete_post(id):
 
 
 @app.route('/add_post', methods=['POST', 'GET'])
+@login_required
 def add_post():
     flag = 'Create'
     form = PostForm()
