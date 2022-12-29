@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 app = Flask(__name__)
 
@@ -64,7 +64,32 @@ def logout():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template('members/dashboard.html')
+    form = UserForm()
+    id = current_user.id
+    name_to_update = Users.query.get_or_404(id)
+    if request.method == 'POST':
+        name_to_update.name = request.form['name']
+        name_to_update.email = request.form['email']
+        name_to_update.school_study = request.form['school_study']
+        name_to_update.username = request.form['username']
+        try:
+            db.session.commit()
+            flash('User updated successfully!!')
+            return render_template('members/dashboard.html',
+                                   form=form,
+                                   name_to_update=name_to_update
+                                   )
+        except:
+            flash('The update can\'t be completed')
+            return render_template('members/dashboard.html',
+                                   form=form,
+                                   name_to_update=name_to_update)
+    else:
+        return render_template('members/dashboard.html',
+                               form=form,
+                               name_to_update=name_to_update,
+                               id=id)
+    # return render_template('members/dashboard.html')
 
 
 class Posts(db.Model):
@@ -231,6 +256,7 @@ def update(id):
         name_to_update.username = request.form['username']
         name_to_update.email = request.form['email']
         name_to_update.school_study = request.form['school_study']
+        name_to_update.username = request.form['username']
         try:
             db.session.commit()
             flash('User updated successfully!!')

@@ -68,23 +68,29 @@
                 {% endif %}
 
             </ul>
-            <li class="nav-item navbar-nav">
+            {% if current_user.is_authenticated %}
 
-                <div class="dropdown show">
-                    <a class="btn btn-secondary mr-3 dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ current_user.username|upper }}
-                    </a>
+                <li class="nav-item navbar-nav">
 
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a href="{{ url_for('dashboard') }}" class="dropdown-item"
-                           aria-current="page"
-                        >Dashboard</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown show">
+                        <a class="btn btn-secondary mr-3 dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ current_user.username|upper }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a href="{{ url_for('dashboard') }}" class="dropdown-item"
+                               aria-current="page">
+                                Dashboard
+                            </a>
+                            <a class="dropdown-item" href="{{ url_for('update', id=current_user.id) }}">Update
+                                Dashboard</a>
+                            <a class="dropdown-item" href="{{ url_for('delete_user', id=current_user.id) }}">Delete My
+                                Account</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            {% endif %}
+
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>

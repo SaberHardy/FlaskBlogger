@@ -1,54 +1,82 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
+    <div class="mx-3">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
 
-    {% for message in get_flashed_messages() %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
+        <h2 class="text-center mt-3">User Dashboard</h2>
+        <br/>
 
-    <h2 class="text-center mt-3">User Dashboard</h2>
-    <br/>
+        <div class="card">
+            <div class="card-header">
+                {{ current_user.name|title }}
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <strong>User Id:</strong>
+                            {{ current_user.id }}<br/>
 
-    <div class="card mx-3">
-        <div class="card-header">
-            {{ current_user.name|title }}
-        </div>
-        <div class="card-body">
-            <p class="card-text">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <strong>User Id:</strong>
-                        {{ current_user.id }}<br/>
+                            <strong>Name:</strong>
+                            {{ current_user.name|title }}<br/>
 
-                        <strong>Name:</strong>
-                        {{ current_user.name|title }}<br/>
+                            <strong>Username:</strong>
+                            {{ current_user.username }}<br/>
 
-                        <strong>Username:</strong>
-                        {{ current_user.username }}<br/>
+                            <strong>Email:</strong>
+                            {{ current_user.email }}<br/>
 
-                        <strong>Email:</strong>
-                        {{ current_user.email }}<br/>
-
-                        </p>
-                        <a href="{{ url_for('logout') }}"
-                           class="btn btn-danger float-right ml-2 btn-sm">
-                            Logout
-                        </a>
-
-                        <a href="{{ url_for('update', id=current_user.id) }}"
-                           class="btn btn-secondary float-right btn-sm">Update
-                            Profile
-                        </a>
+                            </p>
+                            <a href="{{ url_for('logout') }}"
+                               class="btn btn-danger float-right ml-2 btn-sm">
+                                Logout
+                            </a>
+{##}
+{#                            <a href="{{ url_for('update', id=current_user.id) }}"#}
+{#                               class="btn btn-secondary float-right btn-sm">Update#}
+{#                                Profile#}
+{#                            </a>#}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="card my-5">
+            <div class="card-header">
+                <h4 class="text-center">Update Profile</h4>
+            </div>
+            <div class="card-body">
+                <form action="/dashboard" method="POST">
+                    {{ form.hidden_tag() }}
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control", value=name_to_update.name) }}
+                    {{ form.username.label(class="form-label") }}
+                    {{ form.username(class="form-control", value=name_to_update.username) }}
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control", value=name_to_update.email) }}
+                    {{ form.school_study.label(class="form-label") }}
+                    {{ form.school_study(class="form-control", value=name_to_update.school_study) }}
+
+                    <br>
+
+                    {{ form.submit(class="btn btn-success mb-5") }}
+                    <a href="{{ url_for('delete_user', id=current_user.id) }}">
+                        <button class="btn btn-danger mb-5" type="submit">Delete</button>
+                    </a>
+                </form>
+            </div>
+        </div>
     </div>
+
     <br/>
 {% endblock %}
