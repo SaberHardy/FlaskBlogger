@@ -248,7 +248,7 @@ def delete_user(id):
 
 
 @app.route('/update/<int:id>/', methods=['POSt', 'GET'])
-@login_required
+# @login_required
 def update_user_profile(id):
     form = UserForm()
     name_to_update = Users.query.get_or_404(id)
@@ -265,7 +265,8 @@ def update_user_profile(id):
             flash('The update can\'t be completed')
             return render_template('users/update.html',
                                    form=form,
-                                   name_to_update=name_to_update)
+                                   name_to_update=name_to_update,
+                                   id=id)
     else:
         return render_template('users/update.html',
                                form=form,

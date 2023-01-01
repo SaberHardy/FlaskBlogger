@@ -13,7 +13,7 @@ class UserForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     username = StringField('User name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    submit = SubmitField("Register User")
     school_study = StringField('School Study')
     password_hash = PasswordField('Password',
                                   validators=[DataRequired(),

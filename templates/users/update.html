@@ -1,22 +1,20 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
-    <div class="container my-5">
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
 
-        {% if name %}
-            <h3>Hello {{ name }}</h3>
-            <br>
-        {% else %}
-            <div class="shadow p-3 mb-5 bg-body rounded">
-
+    <div class="my-3">
+        {% if current_user.id == id %}
+            <div class="shadow p-3 mb-5 bg-body rounded mx-3">
+                <h2 class="text-center mb-3">Update User Profile</h2>
+                <br/>
                 <form action="/update/{{ name_to_update.id }}" method="POST">
                     {{ form.hidden_tag() }}
                     {{ form.name.label(class="form-label") }}
@@ -36,7 +34,15 @@
                     </a>
                 </form>
             </div>
+        {% else %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Sorry! you can't edit this profile try to login....
 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         {% endif %}
     </div>
+
 {% endblock %}
