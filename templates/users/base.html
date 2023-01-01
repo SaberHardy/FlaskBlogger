@@ -30,11 +30,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-light" href="#">Link</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light"
-                       aria-current="page"
-                       href="{{ url_for('dashboard') }}">Dashboard</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link text-light"
                        aria-current="page"
@@ -82,7 +78,7 @@
                                aria-current="page">
                                 Dashboard
                             </a>
-                            <a class="dropdown-item" href="{{ url_for('update', id=current_user.id) }}">Update
+                            <a class="dropdown-item" href="{{ url_for('update_user_profile', id=current_user.id) }}">Update
                                 Dashboard</a>
                             <a class="dropdown-item" href="{{ url_for('delete_user', id=current_user.id) }}">Delete My
                                 Account</a>

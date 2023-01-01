@@ -249,7 +249,7 @@ def delete_user(id):
 
 @app.route('/update/<int:id>/', methods=['POSt', 'GET'])
 @login_required
-def update(id):
+def update_user_profile(id):
     form = UserForm()
     name_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
@@ -359,6 +359,12 @@ def edit_post(id):
     form.slug.data = post_edit.slug
 
     return render_template('blog/add_post.html', form=form, flag=flag)
+
+
+@app.route('/update-profile/<int:id>/', methods=['POST', 'GET'])
+@login_required
+def edit_profile(id):
+    pass
 
 
 if __name__ == "__main__":
