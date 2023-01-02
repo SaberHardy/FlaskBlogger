@@ -96,9 +96,10 @@ class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     content = db.Column(db.Text)
-    author = db.Column(db.String(255))
+    # author = db.Column(db.String(255))
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     slug = db.Column(db.String(255))
+    poster_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
 class Users(db.Model, UserMixin):
@@ -109,6 +110,7 @@ class Users(db.Model, UserMixin):
     school_study = db.Column(db.String(300))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(128))
+    posts = db.relationship('Posts', backref='poster')
 
     @property
     def password(self):
@@ -304,10 +306,13 @@ def add_post():
     flag = 'Create'
     form = PostForm()
     if form.validate_on_submit():
+        poster = current_user.id
         post = Posts(title=form.title.data,
                      content=form.content.data,
-                     author=form.author.data,
-                     slug=form.slug.data)
+                     # author=form.author.data,
+                     slug=form.slug.data,
+                     poster_id = poster
+                     )
 
         form.title.data = ''
         form.content.data = ''
@@ -345,7 +350,7 @@ def edit_post(id):
     if form.validate_on_submit():
         post_edit.title = form.title.data
         post_edit.content = form.content.data
-        post_edit.author = form.author.data
+        # post_edit.author = form.author.data
         post_edit.slug = form.slug.data
 
         db.session.add(post_edit)
@@ -356,7 +361,7 @@ def edit_post(id):
 
     form.title.data = post_edit.title
     form.content.data = post_edit.content
-    form.author.data = post_edit.author
+    # form.author.data = post_edit.author
     form.slug.data = post_edit.slug
 
     return render_template('blog/add_post.html', form=form, flag=flag)
