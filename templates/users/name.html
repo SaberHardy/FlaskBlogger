@@ -1,22 +1,21 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
     <div class="container my-5">
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
-
         {% if name %}
             <h3>Hello {{ name }}</h3>
             <br>
         {% else %}
             <img src="{{ url_for('static', filename='images/space.jpg') }}"
-            width="120" height="100" class="rounded-circle">
+                 width="120" height="100" class="rounded-circle">
 
             <form method="POST">
                 {{ form.hidden_tag() }}

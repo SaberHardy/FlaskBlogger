@@ -1,15 +1,15 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
     <div class="container my-5">
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
 
         <h1>Add Blog Post</h1>
         <div class="shadow p-3 mb-5 bg-body rounded">
@@ -19,8 +19,8 @@
                 {{ form.title.label(class="form-label") }}
                 {{ form.title(class="form-control mb-3") }}
 
-{#                {{ form.author.label(class="form-label") }}#}
-{#                {{ form.author(class="form-control mb-3") }}#}
+                {#                {{ form.author.label(class="form-label") }}#}
+                {#                {{ form.author(class="form-control mb-3") }}#}
 
                 {{ form.content.label(class="form-label") }}
                 {{ form.content(class="form-control mb-3", rows="5") }}

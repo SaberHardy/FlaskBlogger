@@ -1,7 +1,16 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
     <div class="container my-5">
+
         {% for post in posts %}
             <div class="card mt-3 shadow-lg p-3 mb-5 bg-white rounded" style="width:1150px">
                 <div class="card-body">

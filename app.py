@@ -258,7 +258,7 @@ def update_user_profile(id):
         name_to_update.username = request.form['username']
         name_to_update.email = request.form['email']
         name_to_update.school_study = request.form['school_study']
-        name_to_update.username = request.form['username']
+        name_to_update.name = request.form['name']
         try:
             db.session.commit()
             flash('User updated successfully!!')
@@ -280,22 +280,29 @@ def update_user_profile(id):
 @login_required
 def delete_post(id):
     post_to_delete = Posts.query.get_or_404(id)
-    try:
-        db.session.delete(post_to_delete)
-        db.session.commit()
 
-        # Return a message
-        flash("Blog Post Was Deleted!")
+    if current_user.id == post_to_delete.poster.id:
 
-        # Grab all the posts from the database
-        posts = Posts.query.order_by(Posts.date_posted)
-        return render_template("blog/all_posts.html", posts=posts)
+        try:
+            db.session.delete(post_to_delete)
+            db.session.commit()
 
-    except:
-        # Return an error message
-        flash("Whoops! There was a problem deleting post, try again...")
+            # Return a message
+            flash("Blog Post Was Deleted!")
 
-        # Grab all the posts from the database
+            # Grab all the posts from the database
+            posts = Posts.query.order_by(Posts.date_posted)
+            return render_template("blog/all_posts.html", posts=posts)
+
+        except:
+            # Return an error message
+            flash("Whoops! There was a problem deleting post, try again...")
+
+            # Grab all the posts from the database
+            posts = Posts.query.order_by(Posts.date_posted)
+            return render_template("blog/all_posts.html", posts=posts)
+    else:
+        flash("You are not authorized to delete this post")
         posts = Posts.query.order_by(Posts.date_posted)
         return render_template("blog/all_posts.html", posts=posts)
 
