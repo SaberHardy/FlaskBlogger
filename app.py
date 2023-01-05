@@ -1,12 +1,18 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
+from wtforms.validators import DataRequired
+
 from forms import NameForm, UserForm, PasswordForm, PostForm, LoginForm, SearchForm
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_ckeditor import CKEditor
+from flask_ckeditor import CKEditorField
+
 
 app = Flask(__name__)
+ckeditor = CKEditor(app)
 
 # Add database
 # Old database

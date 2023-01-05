@@ -23,7 +23,7 @@
                     <a href="{{ url_for('post_detail', id=post.id) }}">
                         <h4 class="card-title">{{ post.title|title }}</h4>
                     </a>
-                    <p class="card-text">{{ post.content }}</p>
+                    <p class="card-text">{{ post.content | safe | truncate(60) }}</p>
                     <a href="#">Read More</a>
                     <br>
                     <small class="card-title">By: {{ post.poster.name }}</small><br>
