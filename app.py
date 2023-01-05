@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
-from forms import NameForm, UserForm, PasswordForm, PostForm, LoginForm
+from forms import NameForm, UserForm, PasswordForm, PostForm, LoginForm, SearchForm
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
@@ -318,7 +318,7 @@ def add_post():
                      content=form.content.data,
                      # author=form.author.data,
                      slug=form.slug.data,
-                     poster_id = poster
+                     poster_id=poster
                      )
 
         form.title.data = ''
@@ -378,6 +378,31 @@ def edit_post(id):
 @login_required
 def edit_profile(id):
     pass
+
+
+@app.context_processor
+def base():
+    form = SearchForm()
+    return dict(form=form)
+
+
+# Create Search Function
+@app.route('/search', methods=["POST"])
+@login_required
+def search_post():
+    form = SearchForm()
+    posts = Posts.query
+    if form.validate_on_submit():
+        # Get data from submitted form
+        post_searched = form.searched.data
+        # Query the Database
+        posts = posts.filter(Posts.content.like('%' + post_searched + '%'))
+        posts = posts.order_by(Posts.title).all()
+
+        return render_template("blog/searched.html",
+                               form=form,
+                               searched=post_searched,
+                               posts=posts)
 
 
 if __name__ == "__main__":
