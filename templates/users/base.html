@@ -78,10 +78,15 @@
                                aria-current="page">
                                 Dashboard
                             </a>
-                            <a class="dropdown-item" href="{{ url_for('update_user_profile', id=current_user.id) }}">Update
-                                Dashboard</a>
-                            <a class="dropdown-item" href="{{ url_for('delete_user', id=current_user.id) }}">Delete My
-                                Account</a>
+                            <a class="dropdown-item" href="{{ url_for('update_user_profile', id=current_user.id) }}">
+                                Update Dashboard
+                            </a>
+                            <a class="dropdown-item" href="{{ url_for('delete_user', id=current_user.id) }}">
+                                Delete My Account
+                            </a>
+                            <a class="dropdown-item" href="{{ url_for('admin') }}">
+                                Admin
+                            </a>
                         </div>
                     </div>
                 </li>

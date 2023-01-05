@@ -139,6 +139,19 @@ class Users(db.Model, UserMixin):
 # def home():  # put application's code here
 #     return render_template('home.html')
 
+@app.route('/admin')
+@login_required
+def admin():  # put application's code here
+    id = current_user.id
+    if id == 12:
+        return render_template('blog/admin_page.html')
+    else:
+        flash("You don't have rights to access to this page")
+        return redirect(url_for('dashboard'))
+
+
+
+
 
 @app.route('/user/<name>/')
 def user(name):  # put application's code here
