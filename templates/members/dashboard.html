@@ -34,6 +34,9 @@
                         <strong>Email:</strong>
                         {{ current_user.email }}<br/>
 
+                        <strong>About author:</strong>
+                        {{ current_user.about_author }}<br/>
+
                         </p>
                         <a href="{{ url_for('logout') }}"
                            class="btn btn-danger float-right ml-2 btn-sm">
@@ -64,6 +67,11 @@
                     {{ form.email(class="form-control", value=name_to_update.email) }}
                     {{ form.school_study.label(class="form-label") }}
                     {{ form.school_study(class="form-control", value=name_to_update.school_study) }}
+
+                    {{ form.about_author.label(class="form-label") }}
+                    <textarea name="about_author" class="form-control">
+                        {{ name_to_update.about_author }}
+                    </textarea>
 
                     <div class="my-3">
                         {{ form.submit(class="btn btn-success") }}
