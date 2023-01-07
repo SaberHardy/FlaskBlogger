@@ -10,7 +10,6 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_ckeditor import CKEditor
 from flask_ckeditor import CKEditorField
 
-
 app = Flask(__name__)
 ckeditor = CKEditor(app)
 
@@ -143,14 +142,11 @@ class Users(db.Model, UserMixin):
 @login_required
 def admin():  # put application's code here
     id = current_user.id
-    if id == 12:
+    if id == 12:  # 12 is the admin for now
         return render_template('blog/admin_page.html')
     else:
         flash("You don't have rights to access to this page")
         return redirect(url_for('dashboard'))
-
-
-
 
 
 @app.route('/user/<name>/')

@@ -2,7 +2,36 @@
 
 {% block content %}
     <div class="container my-5">
-        <p>You are searching for...</p>
-            {{ searched }}
+        <p>You are searching for...
+            <b>{{ searched }}</b>
+        </p>
+
+        {% if posts %}
+            <div class="container my-5">
+
+                {% for post in posts %}
+                    <div class="card mt-3 shadow-lg p-3 mb-5 bg-white rounded" style="width:1150px">
+                        <div class="card-body">
+                            <a class="float-right" href="{{ url_for('delete_post', id=post.id) }}">
+                                <i class="bi bi-trash text-danger mx-3"></i>
+                            </a>
+                            <a class="float-right" href="{{ url_for('edit_post', id=post.id) }}">
+                                <i class="bi bi-pencil-square text-success"></i>
+                            </a>
+                            <a href="{{ url_for('post_detail', id=post.id) }}">
+                                <h4 class="card-title">{{ post.title|title }}</h4>
+                            </a>
+                            <p class="card-text">{{ post.content | safe | truncate(60) }}</p>
+                            <a href="#">Read More</a>
+                            <br>
+                            <small class="card-title">By: {{ post.poster.name }}</small><br>
+                            <small class="card-text float-right">Created On: {{ post.date_posted }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h3>Nothing found here to show!!</h3>
+        {% endif %}
     </div>
 {% endblock %}
