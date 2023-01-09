@@ -1,5 +1,6 @@
 from flask_ckeditor import CKEditorField
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField
 from wtforms import StringField, SubmitField, PasswordField, TextAreaField  # fields to type  into input
 from wtforms.validators import DataRequired, EqualTo, Length
 from wtforms.widgets import TextArea
@@ -14,6 +15,7 @@ class UserForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     username = StringField('User name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
+    profile_picture = FileField("Profile Picture")
     submit = SubmitField("Update user")
     school_study = StringField('School Study')
     about_author = TextAreaField('About The author')

@@ -9,6 +9,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_ckeditor import CKEditor
 from flask_ckeditor import CKEditorField
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 
 app = Flask(__name__)
 ckeditor = CKEditor(app)
@@ -20,6 +23,9 @@ ckeditor = CKEditor(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:@localhost/users"
 
 app.config['SECRET_KEY'] = "my secret key to world"
+
+UPLOAD_FOLDER = 'static/images/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 
@@ -78,8 +84,17 @@ def dashboard():
         name_to_update.school_study = request.form['school_study']
         name_to_update.username = request.form['username']
         name_to_update.about_author = request.form['about_author']
+        name_to_update.profile_picture = request.files['profile_picture']
+        picture_filename = secure_filename(name_to_update.profile_picture.filename)
+        # SAve the image
+
+        picture_name = str(uuid.uuid1()) + '_' + picture_filename
+        saver = request.files['profile_picture']
+        name_to_update.profile_picture = picture_name
+
         try:
             db.session.commit()
+            saver.save(os.path.join(app.config['UPLOAD_FOLDER'], picture_name))
             flash('User updated successfully!!')
             return render_template('members/dashboard.html',
                                    form=form,
@@ -114,6 +129,7 @@ class Users(db.Model, UserMixin):
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), nullable=False, unique=True)
     school_study = db.Column(db.String(300))
+    profile_picture = db.Column(db.String(100), nullable=True)
     about_author = db.Column(db.Text(500), nullable=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(128))
