@@ -52,7 +52,16 @@
                         </a>
                     </div>
                     <div class="col-4">
-                        <img class="rounded-circle" src="{{ url_for('static', filename='images/space.jpg') }}" width="200" align="right">
+                        {% if current_user.profile_picture %}
+                            <img class="rounded-circle"
+                                 src="{{ url_for('static', filename='images/' + current_user.profile_picture) }}"
+                                 width="200"
+                                 align="right">
+                        {% else %}
+                            <img class="rounded-circle"
+                                 src="{{ url_for('static', filename='static/images/space.jpg') }}" width="200"
+                                 align="right">
+                        {% endif %}
                     </div>
                 </div>
             </div>
