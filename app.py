@@ -261,25 +261,29 @@ def add_user():
 @app.route('/delete_user/<int:id>/')
 @login_required
 def delete_user(id):
-    user_to_delete = Users.query.get_or_404(id)
-    name = None
-    form = UserForm()
+    if id == current_user.id:
+        user_to_delete = Users.query.get_or_404(id)
+        name = None
+        form = UserForm()
 
-    try:
-        db.session.delete(user_to_delete)
-        db.session.commit()
-        flash("User Deleted Successfully!!")
+        try:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+            flash("User Deleted Successfully!!")
 
-        our_users = Users.query.order_by(Users.date_added)
-        return render_template("users/add_user.html",
-                               form=form,
-                               name=name,
-                               our_users=our_users)
+            our_users = Users.query.order_by(Users.date_added)
+            return render_template("users/add_user.html",
+                                   form=form,
+                                   name=name,
+                                   our_users=our_users)
 
-    except:
-        flash("Whoops! There was a problem deleting user, try again...")
-        return render_template("users/add_user.html",
-                               form=form, name=name, our_users=our_users)
+        except:
+            flash("Whoops! There was a problem deleting user, try again...")
+            return render_template("users/add_user.html",
+                                   form=form, name=name, our_users=our_users)
+    else:
+        flash("Sorry!! you cant delete this user!!")
+        return redirect(url_for('dashboard'))
 
 
 @app.route('/update/<int:id>/', methods=['POSt', 'GET'])
